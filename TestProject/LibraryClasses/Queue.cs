@@ -61,7 +61,7 @@
 
         public bool Contains(object value)
         {
-            return (_head == null || _tail == null) ? false : Contains(_head, value);
+            return Count > 0 && Contains(_head!, value);
         }
 
         private bool Contains(QueueNode current, object value)
