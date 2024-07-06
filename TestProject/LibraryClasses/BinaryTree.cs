@@ -1,27 +1,27 @@
 ﻿namespace LibraryClasses
 {
-    internal class TreeNode
+    class TreeNode
     {
-        public int Value { get; set; }
-        public TreeNode Left { get; set; }
-        public TreeNode Right { get; set; }
+        public int Value {  get; }
+        public TreeNode? Left { get; set; }
+        public TreeNode? Right { get; set; }
 
         public TreeNode(int value)
         {
             Value = value;
-            Left = null!;
-            Right = null!;
+            Left = null;
+            Right = null;
         }
     }
 
     public class BinaryTree
     {
-        private TreeNode Root { get; set; }
+        private TreeNode? Root { get; set; }
         public int Count { get; private set; }
 
         public BinaryTree()
         {
-            Root = null!;
+            Root = null;
             Count = 0;
         }
 
@@ -51,7 +51,7 @@
 
         public bool Contains(int value)
         {
-            return Contains(Root, value);
+            return Contains(Root!, value);
         }
 
         private bool Contains(TreeNode node, int value)
@@ -62,9 +62,9 @@
             if(node.Value.Equals(value))
                 return true;
             else if(value < node.Value)
-                return Contains(node.Left, value);
+                return Contains(node.Left!, value);
             else
-                return Contains(node.Right, value);
+                return Contains(node.Right!, value);
         }
 
         public void Clear()
@@ -92,14 +92,14 @@
 
             result.Add(node.Value);
 
-            DFSRecursive(node.Left, result);
-            DFSRecursive(node.Right, result);
+            DFSRecursive(node.Left!, result);
+            DFSRecursive(node.Right!, result);
         }
 
         public int[] ToArray()
         {
             var objects = new int[Count];
-            return BFS(Root, objects);
+            return BFS(Root!, objects);
         }
 
         private int[] BFS(TreeNode root, int[] array)

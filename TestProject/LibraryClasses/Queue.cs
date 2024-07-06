@@ -4,24 +4,24 @@
     {
         private class QueueNode
         {
-            public object Value { get; set; }
-            public QueueNode Next { get; set; }
+            public object Value { get; }
+            public QueueNode? Next { get; set; }
 
             public QueueNode(object value)
             {
                 Value = value;
-                Next = null!;
+                Next = null;
             }
         }
 
-        private QueueNode _head;
-        private QueueNode _tail;
+        private QueueNode? _head;
+        private QueueNode? _tail;
         public int Count { get; private set; }
 
         public Queue()
         {
-            _head = null!;
-            _tail = null!;
+            _head = null;
+            _tail = null;
             Count = 0;
         }
 
@@ -54,17 +54,14 @@
             Count--;
 
             if (_head == null)
-                _tail = null!;
+                _tail = null;
 
             return deQueueElement;
         }
 
         public bool Contains(object value)
         {
-            if (_head == null || _tail == null)
-                return false;
-            else
-                return Contains(_head, value);
+            return (_head == null || _tail == null) ? false : Contains(_head, value);
         }
 
         private bool Contains(QueueNode current, object value)
@@ -74,7 +71,7 @@
                 if (current.Value.Equals(value))
                     return true;
 
-                current = current.Next;
+                current = current.Next!;
             }
 
             return false;
@@ -108,8 +105,8 @@
 
         public void Clear()
         {
-            _head = null!;
-            _tail = null!;
+            _head = null;
+            _tail = null;
             Count = 0;
         }
     }

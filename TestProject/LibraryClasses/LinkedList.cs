@@ -1,27 +1,27 @@
 ﻿namespace LibraryClasses
 {
-    internal class LinkedListNode
-    {
-        public object Value { get; set; }
-        public LinkedListNode Next { get; set; }
-        
-        public LinkedListNode(object value)
-        {
-            Value = value;
-            Next = null!;
-        }
-    }
-
     public class LinkedList
     {
-        internal LinkedListNode First { get; set; }
-        internal LinkedListNode Last { get; set; }
+        protected class LinkedListNode
+        {
+            public object Value { get; }
+            public LinkedListNode? Next { get; set; }
+
+            public LinkedListNode(object value)
+            {
+                Value = value;
+                Next = null;
+            }
+        }
+
+        protected LinkedListNode? First { get; set; }
+        protected LinkedListNode? Last { get; set; }
         public int Count { get; protected set; }
 
         public LinkedList()
         {
-            First = null!;
-            Last = null!;
+            First = null;
+            Last = null;
             Count = 0;
         }
 
@@ -36,7 +36,7 @@
             }
             else
             {
-                Last.Next = newNode;
+                Last!.Next = newNode;
                 Last = newNode;
             }
 
@@ -78,15 +78,15 @@
 
             while (currentIndex < index - 1)
             {
-                current = current.Next;
+                current = current!.Next;
                 currentIndex++;
 
                 if (current == null)
                     throw new IndexOutOfRangeException("Index is out of range.");
             }
 
-            newNode.Next = current.Next;
-            current.Next = newNode;
+            newNode.Next = current?.Next;
+            current!.Next = newNode;
 
             Count++;
         }
@@ -97,7 +97,7 @@
                 return false;
             else
             {
-                if(First.Value.Equals(value) || Last.Value.Equals(value))
+                if(First.Value.Equals(value) || Last!.Value.Equals(value))
                     return true;
                 else
                 {
@@ -136,8 +136,8 @@
 
         public void Clear()
         {
-            First = null!; 
-            Last = null!;
+            First = null; 
+            Last = null;
             Count = 0;
         }
     }

@@ -4,22 +4,22 @@
     {
         private class StackNode
         {
-            public object Value { get; set; }
-            public StackNode Next { get; set; }
+            public object Value { get; }
+            public StackNode? Next { get; set; }
 
             public StackNode(object value)
             {
                 Value = value;
-                Next = null!;
+                Next = null;
             }
         }
 
-        private StackNode _top;
+        private StackNode? _top;
         public int Count { get; private set; }
 
         public Stack()
         {
-            _top = null!;
+            _top = null;
             Count = 0;
         }
 
@@ -97,7 +97,7 @@
 
         public void Clear()
         {
-            _top = null!;
+            _top = null;
             Count = 0;
         }
     }
