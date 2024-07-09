@@ -1,4 +1,5 @@
 ﻿using LibraryClasses;
+using System.Collections.Generic;
 
 namespace TestProject
 {
@@ -22,7 +23,7 @@ namespace TestProject
         static void TestList()
         {
             List list = new List(9);
-
+            
             AddElementsToList(list);
 
             TestListContains(list);
@@ -34,6 +35,8 @@ namespace TestProject
             TestListRemove(list);
 
             TestListRemoveAt(list);
+
+            TestListCopyTo(list);
 
             TestListIndexOf(list);
 
@@ -91,6 +94,19 @@ namespace TestProject
             list.RemoveAt(3);
             Console.WriteLine("List after removing element at index 3:");
             PrintList(list);
+            Console.WriteLine();
+        }
+
+        static void TestListCopyTo(List list)
+        {
+            object[] array = new object[10];
+            list.CopyTo(array, 2);
+            Console.WriteLine("Array after CopyTo:");
+            for (int i = 0; i < array.Length; i++)
+            {
+                Console.WriteLine($"array[{i}]: {array[i]}");
+            }
+
             Console.WriteLine();
         }
 
@@ -172,6 +188,10 @@ namespace TestProject
 
             TestBinaryTreeBFS(tree);
 
+            TestBinaryTreeRemove(tree);
+
+            TestBinaryTreeCopyTo(tree);
+
             TestBinaryTreeClear(tree);
         }
 
@@ -205,6 +225,41 @@ namespace TestProject
             Console.WriteLine();
         }
 
+        static void TestBinaryTreeRemove(BinaryTree tree)
+        {
+            Console.WriteLine("Removing elements:");
+
+            tree.Remove(15);
+            tree.Remove(5);
+            tree.Remove(17);
+
+            Console.Write("Binary tree after removals: ");
+            var array = tree.ToArray();
+
+            foreach (var item in array)
+            {
+                Console.Write(item + " ");
+            }
+
+            Console.WriteLine("\n");
+        }
+
+        static void TestBinaryTreeCopyTo(BinaryTree tree)
+        {
+            Console.WriteLine("Copying elements to array:");
+
+            object[] copyArray = new object[tree.Count];
+            tree.CopyTo(copyArray, 0);
+
+            Console.Write("Copied array: ");
+            foreach (var item in copyArray)
+            {
+                Console.Write(item + " ");
+            }
+
+            Console.WriteLine("\n");
+        }
+
         static void TestBinaryTreeClear(BinaryTree tree)
         {
             tree.Clear();
@@ -217,7 +272,7 @@ namespace TestProject
         static void TestQueue()
         {
             Queue queue = new Queue();
-
+            
             queue.Enqueue(1);
             queue.Enqueue(2);
             queue.Enqueue(3);
@@ -231,6 +286,8 @@ namespace TestProject
             TestQueuePeek(queue);
 
             TestQueueDequeue(queue);
+
+            TestQueueCopyTo(queue);
 
             TestQueueToArray(queue);
 
@@ -260,6 +317,22 @@ namespace TestProject
         {
             Console.WriteLine("Dequeue: " + queue.Dequeue()); // Output: Dequeue: 1
             Console.WriteLine();
+        }
+
+        static void TestQueueCopyTo(Queue queue)
+        {
+            Console.WriteLine("Copying elements to array:");
+
+            object[] copyArray = new object[queue.Count];
+            queue.CopyTo(copyArray, 0);
+
+            Console.Write("Copied array: ");
+            foreach (var item in copyArray)
+            {
+                Console.Write(item + " ");
+            }
+
+            Console.WriteLine("\n");
         }
 
         static void TestQueueToArray(Queue queue)
@@ -295,6 +368,8 @@ namespace TestProject
 
             TestStackPop(stack);
 
+            TestStackCopyTo(stack);
+
             TestStackToArray(stack);
 
             TestStackClear(stack);
@@ -323,6 +398,22 @@ namespace TestProject
         {
             Console.WriteLine("Pop: " + stack.Pop()); // Output: Pop: 3
             Console.WriteLine();
+        }
+
+        static void TestStackCopyTo(Stack stack)
+        {
+            Console.WriteLine("Copying elements to array:");
+
+            object[] copyArray = new object[stack.Count];
+            stack.CopyTo(copyArray, 0);
+
+            Console.Write("Copied array: ");
+            foreach (var item in copyArray)
+            {
+                Console.Write(item + " ");
+            }
+
+            Console.WriteLine("\n");
         }
 
         static void TestStackToArray(Stack stack)
@@ -363,11 +454,26 @@ namespace TestProject
             Console.WriteLine($"\nList contains {searchValue}: {linkedList.Contains(searchValue)}");
             Console.WriteLine();
 
+            TestLinkedListCopyTo(linkedList);
+
             // Clear
             linkedList.Clear();
             Console.WriteLine("List cleared.");
 
             TestPrintLinkedList(linkedList);
+        }
+
+        static void TestLinkedListCopyTo(LinkedList list)
+        {
+            object[] array = new object[10];
+            list.CopyTo(array, 2);
+            Console.WriteLine("Array after CopyTo:");
+            for (int i = 0; i < array.Length; i++)
+            {
+                Console.WriteLine($"array[{i}]: {array[i]}");
+            }
+
+            Console.WriteLine();
         }
 
         static void TestPrintLinkedList(LinkedList linkedList)
@@ -395,6 +501,7 @@ namespace TestProject
             TestDoublyLinkedListRemove(doublyLinkedList);
             TestDoublyLinkedListInsert(doublyLinkedList);
             TestDoublyLinkedListContains(doublyLinkedList);
+            TestDoublyLinkedListCopyTo(doublyLinkedList);
             TestDoublyLinkedListClear(doublyLinkedList);
         }
 
@@ -435,6 +542,19 @@ namespace TestProject
         {
             Console.WriteLine("Checking if 3 is in the list: " + list.Contains(3));
             Console.WriteLine("Checking if 10 is in the list: " + list.Contains(10));
+            Console.WriteLine();
+        }
+
+        static void TestDoublyLinkedListCopyTo(DoublyLinkedList list)
+        {
+            object[] array = new object[10];
+            list.CopyTo(array, 2);
+            Console.WriteLine("Array after CopyTo:");
+            for (int i = 0; i < array.Length; i++)
+            {
+                Console.WriteLine($"array[{i}]: {array[i]}");
+            }
+
             Console.WriteLine();
         }
 

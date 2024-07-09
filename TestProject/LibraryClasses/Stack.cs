@@ -1,6 +1,9 @@
-﻿namespace LibraryClasses
+﻿using LibraryClasses.Interfaces;
+using System.Threading;
+
+namespace LibraryClasses
 {
-    public class Stack
+    public class Stack : IStack
     {
         private class StackNode
         {
@@ -22,6 +25,39 @@
             _top = null;
             Count = 0;
         }
+
+        void ICollection.Add(object item)
+        {
+            Push(item);
+        }
+
+        bool ICollection.Remove(object item)
+        {
+            return (Pop() is StackNode) ? true : false;
+        }
+
+        public void CopyTo(object[] array, int arrayIndex)
+        {
+            if (array == null)
+                throw new ArgumentNullException(nameof(array), "The target array cannot be null.");
+
+
+            if (arrayIndex < 0 || arrayIndex >= array.Length)
+                throw new ArgumentOutOfRangeException(nameof(arrayIndex), "The array index is out of range.");
+
+
+            if (array.Length - arrayIndex < Count)
+                throw new ArgumentException("The target array does not have enough space to copy all elements.");
+
+            var current = _top;
+
+            for (int i = 0; i < Count; i++)
+            {
+                array[arrayIndex + i] = current!.Value;
+                current = current?.Next;
+            }
+        }
+
 
         public void Push(object value)
         {

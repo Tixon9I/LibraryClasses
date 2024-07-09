@@ -1,6 +1,8 @@
-﻿namespace LibraryClasses
+﻿using LibraryClasses.Interfaces;
+
+namespace LibraryClasses
 {
-    public class DoublyLinkedList : LinkedList
+    public class DoublyLinkedList : LinkedList, ILinkedList
     {
         class DoublyLinkedListNode : LinkedListNode
         {
@@ -12,58 +14,24 @@
             }
         }
 
-        public override void Add(object value)
+        protected override LinkedListNode CreateNode(object value, LinkedListNode? next = null, LinkedListNode? prev = null)
         {
-            var newNode = new DoublyLinkedListNode(value);
-
-            if(First == null)
-            {
-                First = newNode;
-                Last = newNode;
-            }
-            else
-            {
-                newNode.Prev = (DoublyLinkedListNode?)Last;
-                Last!.Next = newNode;
-                Last = newNode;
-            }
-
-            Count++;
+            return new DoublyLinkedListNode(value) 
+            { 
+                Next = next, 
+                Prev = ((DoublyLinkedListNode?)prev)?.Prev 
+            };
         }
 
-        public override void AddFirst(object value)
+        protected override void UpdateNode(LinkedListNode node, LinkedListNode? next = null, LinkedListNode? prev = null)
         {
-            var newNode = new DoublyLinkedListNode(value);
-
-            if (First == null)
-            {
-                First = newNode;
-                Last = newNode;
-            }
-            else
-            {
-                newNode.Next = First;
-                ((DoublyLinkedListNode)First).Prev = newNode;
-                First = newNode;
-            }
-
-            Count++;
+            base.UpdateNode(node, next, prev);
+            ((DoublyLinkedListNode)node).Prev = (DoublyLinkedListNode?)prev;
         }
 
-        public override void Insert(int index, object value)
+        protected override void InsertionNode(LinkedListNode newNode, int index, int currentIndex = 0)
         {
-            if (index < 0 || index > Count)
-                throw new ArgumentOutOfRangeException(nameof(index));
-
-            if (index == 0)
-            {
-                AddFirst(value);
-                return;
-            }
-
-            var newNode = new DoublyLinkedListNode(value);
             var current = (DoublyLinkedListNode?)First;
-            var currentIndex = 0;
 
             while (currentIndex < index - 1)
             {
@@ -75,32 +43,27 @@
             }
 
             newNode.Next = current?.Next;
-            newNode.Prev = current;
+            ((DoublyLinkedListNode)newNode).Prev = current;
 
             if (current?.Next != null)
-                ((DoublyLinkedListNode)current.Next).Prev = newNode;
+                ((DoublyLinkedListNode)current.Next).Prev = (DoublyLinkedListNode)newNode;
 
             current!.Next = newNode;
 
             if (newNode.Next == null)
                 Last = newNode;
-
-            Count++;
         }
 
-        public void Remove(object value)
+        protected override bool RemoveNode(object value)
         {
-            if (First == null)
-                throw new InvalidOperationException("List is empty");
-
-            DoublyLinkedListNode ?previous = null;
+            DoublyLinkedListNode? previous = null;
             var current = First;
 
             while (current != null)
             {
-                if(current.Value.Equals(value))
+                if (current.Value.Equals(value))
                 {
-                    if(previous == null)
+                    if (previous == null)
                     {
                         First = (DoublyLinkedListNode?)current.Next;
 
@@ -119,15 +82,16 @@
                     }
 
                     Count--;
-                    return;
+                    return true;
                 }
 
                 previous = (DoublyLinkedListNode)current;
                 current = (DoublyLinkedListNode?)current.Next;
-                
             }
-        }
 
+            return false;
+        }
+        
         public void RemoveFirst()
         {
             if (First == null)

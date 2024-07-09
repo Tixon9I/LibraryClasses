@@ -1,6 +1,8 @@
-﻿namespace LibraryClasses
+﻿using LibraryClasses.Interfaces;
+
+namespace LibraryClasses
 {
-    public class LinkedList
+    public class LinkedList : ILinkedList
     {
         protected class LinkedListNode
         {
@@ -15,7 +17,13 @@
         }
 
         protected LinkedListNode? First { get; set; }
+
         protected LinkedListNode? Last { get; set; }
+
+        object? ILinkedList.First => First;
+        object? ILinkedList.Last => Last;
+
+
         public int Count { get; protected set; }
 
         public LinkedList()
@@ -25,9 +33,19 @@
             Count = 0;
         }
 
-        public virtual void Add(object value)
+        protected virtual LinkedListNode CreateNode(object value, LinkedListNode? next = null, LinkedListNode? prev = null)
         {
-            var newNode = new LinkedListNode(value);
+            return new LinkedListNode(value) { Next = next};
+        }
+
+        protected virtual void UpdateNode(LinkedListNode node, LinkedListNode? next = null, LinkedListNode? prev = null)
+        {
+            prev!.Next = node;
+        }
+
+        public void Add(object value)
+        {
+            var newNode = CreateNode(value);
 
             if(First == null)
             {
@@ -36,16 +54,17 @@
             }
             else
             {
-                Last!.Next = newNode;
+                UpdateNode(newNode, next: null, prev: Last);
+
                 Last = newNode;
             }
 
             Count++;
         }
 
-        public virtual void AddFirst(object value)
+        public void AddFirst(object value)
         {
-            var newNode = new LinkedListNode(value);
+            var newNode = CreateNode(value);
 
             if (First == null)
             {
@@ -54,11 +73,28 @@
             }
             else
             {
-                newNode.Next = First;
+                UpdateNode(First, next: null, newNode);
                 First = newNode;
             }
 
             Count++;
+        }
+
+        protected virtual void InsertionNode(LinkedListNode newNode, int index, int currentIndex = 0)
+        {
+            var current = First;
+
+            while (currentIndex < index - 1)
+            {
+                current = current!.Next;
+                currentIndex++;
+
+                if (current == null)
+                    throw new IndexOutOfRangeException("Index is out of range.");
+            }
+
+            newNode.Next = current?.Next;
+            current!.Next = newNode;
         }
 
         public virtual void Insert(int index, object value)
@@ -72,21 +108,9 @@
                 return;
             }
                 
-            var newNode = new LinkedListNode(value);
-            var current = First;
-            var currentIndex = 0;
+            var newNode = CreateNode(value);
 
-            while (currentIndex < index - 1)
-            {
-                current = current!.Next;
-                currentIndex++;
-
-                if (current == null)
-                    throw new IndexOutOfRangeException("Index is out of range.");
-            }
-
-            newNode.Next = current?.Next;
-            current!.Next = newNode;
+            InsertionNode(newNode, index);
 
             Count++;
         }
@@ -113,6 +137,71 @@
             }
 
             return false;
+        }
+
+        protected virtual bool RemoveNode(object value)
+        {
+            LinkedListNode? prevNode = null;
+            var current = First;
+
+            while (current != null)
+            {
+                if (current.Value.Equals(value))
+                {
+                    if (First!.Value.Equals(value))
+                    {
+                        First = current.Next;
+
+                        if (First == null)
+                            Last = null;
+                    }
+                    else
+                    {
+                        prevNode!.Next = current.Next;
+
+                        if (current.Next == null)
+                            Last = prevNode;
+                    }
+
+                    Count--;
+                    return true;
+                }
+
+                prevNode = current;
+                current = current.Next;
+            }
+
+            return false;
+        }
+
+        public bool Remove(object value)
+        {
+            if (First == null)
+                throw new InvalidOperationException("List is empty");
+
+            return RemoveNode(value);
+        }
+
+        public void CopyTo(object[] newArray, int arrayIndex)
+        {
+            if (newArray == null)
+                throw new ArgumentNullException(nameof(newArray), "The target array cannot be null.");
+
+
+            if (arrayIndex < 0 || arrayIndex >= newArray.Length)
+                throw new ArgumentOutOfRangeException(nameof(newArray), "The array index is out of range.");
+
+
+            if (newArray.Length - arrayIndex < Count)
+                throw new ArgumentException("The target array does not have enough space to copy all elements.");
+
+            var current = First;
+
+            while(current != null)
+            {
+                newArray[arrayIndex++] = current.Value;
+                current = current.Next;
+            }
         }
 
         public object[] ToArray()
