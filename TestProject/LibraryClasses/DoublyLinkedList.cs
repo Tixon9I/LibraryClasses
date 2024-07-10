@@ -23,41 +23,26 @@ namespace LibraryClasses
             };
         }
 
-        protected override void UpdateNode(LinkedListNode node, LinkedListNode? next = null, LinkedListNode? prev = null)
+        protected override void UpdateNode(LinkedListNode node, LinkedListNode? next = null, LinkedListNode? prev = null, bool flagInsert = false)
         {
-            base.UpdateNode(node, next, prev);
             ((DoublyLinkedListNode)node).Prev = (DoublyLinkedListNode?)prev;
-        }
 
-        protected override void InsertionNode(LinkedListNode newNode, int index, int currentIndex = 0)
-        {
-            var current = (DoublyLinkedListNode?)First;
-
-            while (currentIndex < index - 1)
+            if(prev?.Next != null && flagInsert == true)
             {
-                current = (DoublyLinkedListNode?)current?.Next;
-                currentIndex++;
-
-                if (current == null)
-                    throw new IndexOutOfRangeException("Index is out of range.");
+                ((DoublyLinkedListNode)prev.Next).Prev = (DoublyLinkedListNode)node;
+                base.UpdateNode(node, next, prev);
             }
+            else
+                base.UpdateNode(node, next, prev);
 
-            newNode.Next = current?.Next;
-            ((DoublyLinkedListNode)newNode).Prev = current;
-
-            if (current?.Next != null)
-                ((DoublyLinkedListNode)current.Next).Prev = (DoublyLinkedListNode)newNode;
-
-            current!.Next = newNode;
-
-            if (newNode.Next == null)
-                Last = newNode;
+            if(node.Next == null && flagInsert == true)
+                _last = node;
         }
 
         protected override bool RemoveNode(object value)
         {
             DoublyLinkedListNode? previous = null;
-            var current = First;
+            var current = _first;
 
             while (current != null)
             {
@@ -65,18 +50,18 @@ namespace LibraryClasses
                 {
                     if (previous == null)
                     {
-                        First = (DoublyLinkedListNode?)current.Next;
+                        _first = (DoublyLinkedListNode?)current.Next;
 
-                        if (First != null)
-                            ((DoublyLinkedListNode)First).Prev = null;
+                        if (_first != null)
+                            ((DoublyLinkedListNode)_first).Prev = null;
                         else
-                            Last = null!;
+                            _last = null!;
                     }
                     else
                     {
                         previous.Next = current.Next;
                         if (current.Next == null)
-                            Last = previous;
+                            _last = previous;
                         else
                             ((DoublyLinkedListNode)current.Next).Prev = previous;
                     }
@@ -94,28 +79,28 @@ namespace LibraryClasses
         
         public void RemoveFirst()
         {
-            if (First == null)
+            if (_first == null)
                 throw new InvalidOperationException("List is empty");
 
-            First = (DoublyLinkedListNode?)First.Next;
-            if (First != null)
-                ((DoublyLinkedListNode)First).Prev = null;
+            _first = (DoublyLinkedListNode?)_first.Next;
+            if (_first != null)
+                ((DoublyLinkedListNode)_first).Prev = null;
             else
-                Last = null;
+                _last = null;
 
             Count--;
         }
 
         public void RemoveLast()
         {
-            if (Last == null)
+            if (_last == null)
                 throw new InvalidOperationException("List is empty");
 
-            Last = ((DoublyLinkedListNode)Last).Prev;
-            if (Last != null)
-                Last.Next = null;
+            _last = ((DoublyLinkedListNode)_last).Prev;
+            if (_last != null)
+                _last.Next = null;
             else
-                First = null;
+                _first = null;
 
             Count--;
         }

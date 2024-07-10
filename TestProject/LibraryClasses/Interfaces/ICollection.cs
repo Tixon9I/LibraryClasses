@@ -10,8 +10,8 @@
 
         bool Contains(object item);
 
-        void CopyTo(object[] array, int arrayIndex);
+        object[] ToArray();
 
-        bool Remove(object item);
+        //bool Remove(object item);
     }
 }

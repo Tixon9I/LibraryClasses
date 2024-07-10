@@ -119,25 +119,6 @@ namespace LibraryClasses
             return -1;
         }
 
-        public void CopyTo(object[] array, int arrayIndex)
-        {
-            if (array == null)
-                throw new ArgumentNullException(nameof(array), "The target array cannot be null.");
-
-
-            if (arrayIndex < 0 || arrayIndex >= array.Length)
-                throw new ArgumentOutOfRangeException(nameof(arrayIndex), "The array index is out of range.");
-
-
-            if (array.Length - arrayIndex < Count)
-                throw new ArgumentException("The target array does not have enough space to copy all elements.");
-
-            for (int i = 0; i < Count; i++)
-            {
-                array[arrayIndex + i] = this[i];
-            }
-        }
-
         public object[] ToArray()
         {
             var array = new object[Count];
