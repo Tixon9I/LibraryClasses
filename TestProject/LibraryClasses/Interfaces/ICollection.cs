@@ -11,7 +11,5 @@
         bool Contains(object item);
 
         object[] ToArray();
-
-        //bool Remove(object item);
     }
 }
