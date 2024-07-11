@@ -1,6 +1,8 @@
-﻿namespace LibraryClasses
+﻿using LibraryClasses.Interfaces;
+
+namespace LibraryClasses
 {
-    public class List
+    public class List : IList
     {
         private const int DefaultCapacity = 4;
         private object[] _objects;
@@ -44,9 +46,7 @@
             {
                 var newCapacity = _objects.Length * 2;
                 var newObjects = new object[newCapacity];
-
-                for (int i = 0; i < Count; i++)
-                    newObjects[i] = _objects[i];
+                _objects.CopyTo(newObjects, 0);
                 _objects = newObjects;
             }
         }
@@ -71,12 +71,17 @@
             Count++;
         }
 
-        public void Remove(object obj)
+        public bool Remove(object obj)
         {
             var index = IndexOf(obj);
 
             if (index >= 0)
+            {
                 RemoveAt(index);
+                return true;
+            }
+                
+            return false;
         }
 
         public void RemoveAt(int index)

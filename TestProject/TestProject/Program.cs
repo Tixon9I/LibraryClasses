@@ -6,7 +6,7 @@ namespace TestProject
     {
         static void Main(string[] args)
         {
-            TestList();
+            //TestList();
 
             //TestBinaryTree();
 
@@ -16,13 +16,13 @@ namespace TestProject
 
             //TestLinkedList();
 
-            //TestDoublyLinkedList();
+            TestDoublyLinkedList();
         }
 
         static void TestList()
         {
             List list = new List(9);
-
+            
             AddElementsToList(list);
 
             TestListContains(list);
@@ -217,7 +217,7 @@ namespace TestProject
         static void TestQueue()
         {
             Queue queue = new Queue();
-
+            
             queue.Enqueue(1);
             queue.Enqueue(2);
             queue.Enqueue(3);

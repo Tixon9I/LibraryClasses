@@ -1,6 +1,8 @@
-﻿namespace LibraryClasses
+﻿using LibraryClasses.Interfaces;
+
+namespace LibraryClasses
 {
-    public class Stack
+    public class Stack : IStack
     {
         private class StackNode
         {
@@ -21,6 +23,11 @@
         {
             _top = null;
             Count = 0;
+        }
+
+        void ICollection.Add(object item)
+        {
+            Push(item);
         }
 
         public void Push(object value)

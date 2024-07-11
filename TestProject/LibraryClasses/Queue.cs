@@ -1,6 +1,8 @@
-﻿namespace LibraryClasses
+﻿using LibraryClasses.Interfaces;
+
+namespace LibraryClasses
 {
-    public class Queue
+    public class Queue : IQueue
     {
         private class QueueNode
         {
@@ -23,6 +25,11 @@
             _head = null;
             _tail = null;
             Count = 0;
+        }
+
+        void ICollection.Add(object item)
+        {
+            Enqueue(item);
         }
 
         public void Enqueue(object value)

@@ -1,6 +1,8 @@
-﻿namespace LibraryClasses
+﻿using LibraryClasses.Interfaces;
+
+namespace LibraryClasses
 {
-    public class LinkedList
+    public class LinkedList : ILinkedList
     {
         protected class LinkedListNode
         {
@@ -14,48 +16,63 @@
             }
         }
 
-        protected LinkedListNode? First { get; set; }
-        protected LinkedListNode? Last { get; set; }
+        protected LinkedListNode? _first;
+        protected LinkedListNode? _last;
+
+        public object? First => _first?.Value;
+        public object? Last => _last?.Value;
+
         public int Count { get; protected set; }
 
         public LinkedList()
         {
-            First = null;
-            Last = null;
+            _first = null;
+            _last = null;
             Count = 0;
         }
 
-        public virtual void Add(object value)
+        protected virtual LinkedListNode CreateNode(object value, LinkedListNode? next = null, LinkedListNode? prev = null)
         {
-            var newNode = new LinkedListNode(value);
+            return new LinkedListNode(value) { Next = next};
+        }
 
-            if(First == null)
+        protected virtual void UpdateNode(LinkedListNode node, LinkedListNode? next = null, LinkedListNode? prev = null, bool flagInsert = false)
+        {
+            prev!.Next = node;
+        }
+
+        public void Add(object value)
+        {
+            var newNode = CreateNode(value);
+
+            if(_first == null)
             {
-                First = newNode;
-                Last = newNode;
+                _first = newNode;
+                _last = newNode;
             }
             else
             {
-                Last!.Next = newNode;
-                Last = newNode;
+                UpdateNode(newNode, next: null, prev: _last);
+
+                _last = newNode;
             }
 
             Count++;
         }
 
-        public virtual void AddFirst(object value)
+        public void AddFirst(object value)
         {
-            var newNode = new LinkedListNode(value);
+            var newNode = CreateNode(value);
 
-            if (First == null)
+            if (_first == null)
             {
-                First = newNode;
-                Last = newNode;
+                _first = newNode;
+                _last = newNode;
             }
             else
             {
-                newNode.Next = First;
-                First = newNode;
+                UpdateNode(_first, next: null, prev: newNode);
+                _first = newNode;
             }
 
             Count++;
@@ -72,9 +89,9 @@
                 return;
             }
                 
-            var newNode = new LinkedListNode(value);
-            var current = First;
+            var newNode = CreateNode(value);
             var currentIndex = 0;
+            var current = _first;
 
             while (currentIndex < index - 1)
             {
@@ -86,22 +103,22 @@
             }
 
             newNode.Next = current?.Next;
-            current!.Next = newNode;
-
+            UpdateNode(newNode, prev: current, flagInsert: true);
+            
             Count++;
         }
 
         public bool Contains(object value)
         {
-            if (First == null)
+            if (_first == null)
                 return false;
             else
             {
-                if(First.Value.Equals(value) || Last!.Value.Equals(value))
+                if(_first.Value.Equals(value) || _last!.Value.Equals(value))
                     return true;
                 else
                 {
-                    var currentNode = First.Next;
+                    var currentNode = _first.Next;
 
                     while (currentNode != null)
                     {
@@ -115,15 +132,58 @@
             return false;
         }
 
+        protected virtual bool RemoveNode(object value)
+        {
+            LinkedListNode? prevNode = null;
+            var current = _first;
+
+            while (current != null)
+            {
+                if (current.Value.Equals(value))
+                {
+                    if (_first!.Value.Equals(value))
+                    {
+                        _first = current.Next;
+
+                        if (_first == null)
+                            _last = null;
+                    }
+                    else
+                    {
+                        prevNode!.Next = current.Next;
+
+                        if (current.Next == null)
+                            _last = prevNode;
+                    }
+
+                    Count--;
+                    return true;
+                }
+
+                prevNode = current;
+                current = current.Next;
+            }
+
+            return false;
+        }
+
+        public bool Remove(object value)
+        {
+            if (_first == null)
+                throw new InvalidOperationException("List is empty");
+
+            return RemoveNode(value);
+        }
+
         public object[] ToArray()
         {
             var objects = new object[0];
 
-            if(First == null)
+            if(_first == null)
                 return objects;
 
             objects = new object[Count];
-            var currentNode = First;
+            var currentNode = _first;
             var index = 0; 
             while (currentNode != null)
             {
@@ -136,8 +196,8 @@
 
         public void Clear()
         {
-            First = null; 
-            Last = null;
+            _first = null; 
+            _last = null;
             Count = 0;
         }
     }

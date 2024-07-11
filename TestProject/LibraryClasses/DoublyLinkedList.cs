@@ -1,6 +1,8 @@
-﻿namespace LibraryClasses
+﻿using LibraryClasses.Interfaces;
+
+namespace LibraryClasses
 {
-    public class DoublyLinkedList : LinkedList
+    public class DoublyLinkedList : LinkedList, ILinkedList
     {
         class DoublyLinkedListNode : LinkedListNode
         {
@@ -12,146 +14,93 @@
             }
         }
 
-        public override void Add(object value)
+        protected override LinkedListNode CreateNode(object value, LinkedListNode? next = null, LinkedListNode? prev = null)
         {
-            var newNode = new DoublyLinkedListNode(value);
+            return new DoublyLinkedListNode(value) 
+            { 
+                Next = next, 
+                Prev = ((DoublyLinkedListNode?)prev)?.Prev 
+            };
+        }
 
-            if(First == null)
+        protected override void UpdateNode(LinkedListNode node, LinkedListNode? next = null, LinkedListNode? prev = null, bool flagInsert = false)
+        {
+            ((DoublyLinkedListNode)node).Prev = (DoublyLinkedListNode?)prev;
+
+            if(prev?.Next != null && flagInsert == true)
             {
-                First = newNode;
-                Last = newNode;
+                ((DoublyLinkedListNode)prev.Next).Prev = (DoublyLinkedListNode)node;
+                base.UpdateNode(node, next, prev);
             }
             else
-            {
-                newNode.Prev = (DoublyLinkedListNode?)Last;
-                Last!.Next = newNode;
-                Last = newNode;
-            }
+                base.UpdateNode(node, next, prev);
 
-            Count++;
+            if(node.Next == null && flagInsert == true)
+                _last = node;
         }
 
-        public override void AddFirst(object value)
+        protected override bool RemoveNode(object value)
         {
-            var newNode = new DoublyLinkedListNode(value);
-
-            if (First == null)
-            {
-                First = newNode;
-                Last = newNode;
-            }
-            else
-            {
-                newNode.Next = First;
-                ((DoublyLinkedListNode)First).Prev = newNode;
-                First = newNode;
-            }
-
-            Count++;
-        }
-
-        public override void Insert(int index, object value)
-        {
-            if (index < 0 || index > Count)
-                throw new ArgumentOutOfRangeException(nameof(index));
-
-            if (index == 0)
-            {
-                AddFirst(value);
-                return;
-            }
-
-            var newNode = new DoublyLinkedListNode(value);
-            var current = (DoublyLinkedListNode?)First;
-            var currentIndex = 0;
-
-            while (currentIndex < index - 1)
-            {
-                current = (DoublyLinkedListNode?)current?.Next;
-                currentIndex++;
-
-                if (current == null)
-                    throw new IndexOutOfRangeException("Index is out of range.");
-            }
-
-            newNode.Next = current?.Next;
-            newNode.Prev = current;
-
-            if (current?.Next != null)
-                ((DoublyLinkedListNode)current.Next).Prev = newNode;
-
-            current!.Next = newNode;
-
-            if (newNode.Next == null)
-                Last = newNode;
-
-            Count++;
-        }
-
-        public void Remove(object value)
-        {
-            if (First == null)
-                throw new InvalidOperationException("List is empty");
-
-            DoublyLinkedListNode ?previous = null;
-            var current = First;
+            DoublyLinkedListNode? previous = null;
+            var current = _first;
 
             while (current != null)
             {
-                if(current.Value.Equals(value))
+                if (current.Value.Equals(value))
                 {
-                    if(previous == null)
+                    if (previous == null)
                     {
-                        First = (DoublyLinkedListNode?)current.Next;
+                        _first = (DoublyLinkedListNode?)current.Next;
 
-                        if (First != null)
-                            ((DoublyLinkedListNode)First).Prev = null;
+                        if (_first != null)
+                            ((DoublyLinkedListNode)_first).Prev = null;
                         else
-                            Last = null!;
+                            _last = null!;
                     }
                     else
                     {
                         previous.Next = current.Next;
                         if (current.Next == null)
-                            Last = previous;
+                            _last = previous;
                         else
                             ((DoublyLinkedListNode)current.Next).Prev = previous;
                     }
 
                     Count--;
-                    return;
+                    return true;
                 }
 
                 previous = (DoublyLinkedListNode)current;
                 current = (DoublyLinkedListNode?)current.Next;
-                
             }
-        }
 
+            return false;
+        }
+        
         public void RemoveFirst()
         {
-            if (First == null)
+            if (_first == null)
                 throw new InvalidOperationException("List is empty");
 
-            First = (DoublyLinkedListNode?)First.Next;
-            if (First != null)
-                ((DoublyLinkedListNode)First).Prev = null;
+            _first = (DoublyLinkedListNode?)_first.Next;
+            if (_first != null)
+                ((DoublyLinkedListNode)_first).Prev = null;
             else
-                Last = null;
+                _last = null;
 
             Count--;
         }
 
         public void RemoveLast()
         {
-            if (Last == null)
+            if (_last == null)
                 throw new InvalidOperationException("List is empty");
 
-            Last = ((DoublyLinkedListNode)Last).Prev;
-            if (Last != null)
-                Last.Next = null;
+            _last = ((DoublyLinkedListNode)_last).Prev;
+            if (_last != null)
+                _last.Next = null;
             else
-                First = null;
+                _first = null;
 
             Count--;
         }
