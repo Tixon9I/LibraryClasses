@@ -1,11 +1,11 @@
 ﻿namespace LibraryClasses.Interfaces
 {
-    internal interface IQueue : ICollection
+    public interface IQueue<T> : ICollections<T>
     {
-        void Enqueue(object value);
+        void Enqueue(T value);
 
-        object Dequeue();
+        T Dequeue();
 
-        object Peek();
+        T Peek();
     }
 }

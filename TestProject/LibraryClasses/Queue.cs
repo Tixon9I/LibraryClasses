@@ -2,14 +2,14 @@
 
 namespace LibraryClasses
 {
-    public class Queue : IQueue
+    public class Queue<T> : IQueue<T>
     {
         private class QueueNode
         {
-            public object Value { get; }
+            public T Value { get; }
             public QueueNode? Next { get; set; }
 
-            public QueueNode(object value)
+            public QueueNode(T value)
             {
                 Value = value;
                 Next = null;
@@ -27,12 +27,12 @@ namespace LibraryClasses
             Count = 0;
         }
 
-        void ICollection.Add(object item)
+        void ICollections<T>.Add(T item)
         {
             Enqueue(item);
         }
 
-        public void Enqueue(object value)
+        public void Enqueue(T value)
         {
             var newNode = new QueueNode(value);
 
@@ -50,7 +50,7 @@ namespace LibraryClasses
             Count++;
         }
 
-        public object Dequeue()
+        public T Dequeue()
         {
             if (_head == null)
                 throw new InvalidOperationException("Queue is empty");
@@ -66,16 +66,16 @@ namespace LibraryClasses
             return deQueueElement;
         }
 
-        public bool Contains(object value)
+        public bool Contains(T value)
         {
             return Count > 0 && Contains(_head!, value);
         }
 
-        private bool Contains(QueueNode current, object value)
+        private bool Contains(QueueNode current, T value)
         {
             while (current != null)
             {
-                if (current.Value.Equals(value))
+                if (current.Value!.Equals(value))
                     return true;
 
                 current = current.Next!;
@@ -84,7 +84,7 @@ namespace LibraryClasses
             return false;
         }
 
-        public object Peek()
+        public T Peek()
         {
             if (_head == null)
                 throw new InvalidOperationException("Queue is empty");
@@ -92,12 +92,12 @@ namespace LibraryClasses
             return _head.Value;
         }
 
-        public object[] ToArray()
+        public T[] ToArray()
         {
             if (_head == null)
-                return new object[0];
+                return new T[0];
 
-            var objects = new object[Count];
+            var objects = new T[Count];
             var current = _head;
             var index = 0;
 

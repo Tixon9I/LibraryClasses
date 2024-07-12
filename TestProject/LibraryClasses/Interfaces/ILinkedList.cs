@@ -1,12 +1,12 @@
 ﻿namespace LibraryClasses.Interfaces
 {
-    internal interface ILinkedList : ICollection
+    public interface ILinkedList<T> : ICollections<T>
     {
-        object? First { get; }
-        object? Last { get; }
+        T? First { get; }
+        T? Last { get; }
 
-        void Insert(int index, object value);
+        void Insert(int index, T value);
 
-        void AddFirst(object value);
+        void AddFirst(T value);
     }
 }

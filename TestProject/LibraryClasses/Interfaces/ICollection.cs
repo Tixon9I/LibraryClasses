@@ -1,15 +1,15 @@
 ﻿namespace LibraryClasses.Interfaces
 {
-    internal interface ICollection
+    public interface ICollections<T>
     {
         int Count { get; }
 
-        void Add(object item);
+        void Add(T item);
 
         void Clear();
 
-        bool Contains(object item);
+        bool Contains(T item);
 
-        object[] ToArray();
+        T[] ToArray();
     }
 }

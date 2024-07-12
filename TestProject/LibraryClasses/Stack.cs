@@ -2,14 +2,14 @@
 
 namespace LibraryClasses
 {
-    public class Stack : IStack
+    public class Stack<T> : IStack<T>
     {
         private class StackNode
         {
-            public object Value { get; }
+            public T Value { get; }
             public StackNode? Next { get; set; }
 
-            public StackNode(object value)
+            public StackNode(T value)
             {
                 Value = value;
                 Next = null;
@@ -25,12 +25,12 @@ namespace LibraryClasses
             Count = 0;
         }
 
-        void ICollection.Add(object item)
+        void ICollections<T>.Add(T item)
         {
-            Push(item);
+            Push(item!);
         }
 
-        public void Push(object value)
+        public void Push(T value)
         {
             var node = new StackNode(value);
 
@@ -45,7 +45,7 @@ namespace LibraryClasses
             Count++;
         }
 
-        public object Pop()
+        public T Pop()
         {
             if(_top == null)
                 throw new InvalidOperationException("Stack is empty");
@@ -57,7 +57,7 @@ namespace LibraryClasses
             return poppedElement;
         }
 
-        public object Peek()
+        public T Peek()
         {
             if (_top == null)
                 throw new InvalidOperationException("Stack is empty");
@@ -65,7 +65,7 @@ namespace LibraryClasses
             return _top.Value;
         }
 
-        public bool Contains(object value)
+        public bool Contains(T value)
         {
             if (_top == null)
                 return false;
@@ -75,7 +75,7 @@ namespace LibraryClasses
 
                 while (current != null)
                 {
-                    if(current.Value.Equals(value))
+                    if(current.Value!.Equals(value))
                         return true;
                     current = current.Next;
                 }
@@ -84,12 +84,12 @@ namespace LibraryClasses
             return false;
         }
 
-        public object[] ToArray()
+        public T[] ToArray()
         {
             if(_top == null)
-                return new object[0];
+                return new T[0];
 
-            var objects = new object[Count];
+            var objects = new T[Count];
             var current = _top;
             var index = 0;
 

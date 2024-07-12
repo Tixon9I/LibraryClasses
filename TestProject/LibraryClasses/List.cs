@@ -2,16 +2,16 @@
 
 namespace LibraryClasses
 {
-    public class List : IList
+    public class List<T> : ILiist<T>
     {
         private const int DefaultCapacity = 4;
-        private object[] _objects;
+        private T[] _objects;
         
         public int Count { get; private set; }
 
         public int Capacity { get => _objects.Length; }
 
-        public object this[int index]
+        public T this[int index]
         {
             get
             {
@@ -30,13 +30,13 @@ namespace LibraryClasses
 
         public List()
         {
-            _objects = new object[DefaultCapacity];
+            _objects = new T[DefaultCapacity];
             Count = 0;
         }
 
         public List(int capacity)
         {
-            _objects = new object[capacity];
+            _objects = new T[capacity];
             Count = 0;
         }
 
@@ -45,19 +45,19 @@ namespace LibraryClasses
             if (capacity > _objects.Length)
             {
                 var newCapacity = _objects.Length * 2;
-                var newObjects = new object[newCapacity];
+                var newObjects = new T[newCapacity];
                 _objects.CopyTo(newObjects, 0);
                 _objects = newObjects;
             }
         }
 
-        public void Add(object obj)
+        public void Add(T obj)
         {
             Resize(Count + 1);
             _objects[Count++] = obj;
         }
 
-        public void Insert(int index, object obj)
+        public void Insert(int index, T obj)
         {
             if (index < 0 || index > Count)
                 throw new IndexOutOfRangeException();
@@ -71,7 +71,7 @@ namespace LibraryClasses
             Count++;
         }
 
-        public bool Remove(object obj)
+        public bool Remove(T obj)
         {
             var index = IndexOf(obj);
 
@@ -94,34 +94,34 @@ namespace LibraryClasses
                 _objects![i] = _objects[i + 1];
             }
             Count--;
-            _objects[Count] = null!;
+            _objects[Count] = default!;
         }
 
         public void Clear()
         {
-            _objects = new object[DefaultCapacity];
+            _objects = new T[DefaultCapacity];
             Count = 0;
         }
 
-        public bool Contains(object obj)
+        public bool Contains(T obj)
         {
             if (_objects == null)
                 return false;
 
-            return IndexOf(obj) >= 0 ? true : false;
+            return IndexOf(obj!) >= 0 ? true : false;
         }
 
-        public int IndexOf(object obj)
+        public int IndexOf(T obj)
         {
             for (var i = 0; i < Count; i++)
-                if (_objects![i].Equals(obj))
+                if (_objects[i]!.Equals(obj))
                     return i;
             return -1;
         }
 
-        public object[] ToArray()
+        public T[] ToArray()
         {
-            var array = new object[Count];
+            var array = new T[Count];
 
             for (var i = 0; i < Count; i++)
                 array[i] = _objects![i];
