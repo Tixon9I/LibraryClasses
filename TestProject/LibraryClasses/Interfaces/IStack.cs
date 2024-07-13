@@ -1,11 +1,11 @@
 ﻿namespace LibraryClasses.Interfaces
 {
-    internal interface IStack : ICollection
+    public interface IStack<T> : ICollections<T>
     {
-        void Push(object value);
+        void Push(T value);
 
-        object Pop();
+        T Pop();
 
-        object Peek();
+        T Peek();
     }
 }

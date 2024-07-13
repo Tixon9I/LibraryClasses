@@ -1,12 +1,12 @@
 ﻿namespace LibraryClasses.Interfaces
 {
-    internal interface IList : ICollection
+    public interface ILiist<T> : ICollections<T>
     {
-        object this[int index] { get; set; }
+        T this[int index] { get; set; }
 
-        int IndexOf(object item);
+        int IndexOf(T item);
 
-        void Insert(int index, object item);
+        void Insert(int index, T item);
 
         void RemoveAt(int index);
     }

@@ -2,14 +2,14 @@
 
 namespace LibraryClasses
 {
-    public class LinkedList : ILinkedList
+    public class LinkedList<T> : ILinkedList<T>
     {
         protected class LinkedListNode
         {
-            public object Value { get; }
+            public T Value { get; }
             public LinkedListNode? Next { get; set; }
 
-            public LinkedListNode(object value)
+            public LinkedListNode(T value)
             {
                 Value = value;
                 Next = null;
@@ -19,8 +19,8 @@ namespace LibraryClasses
         protected LinkedListNode? _first;
         protected LinkedListNode? _last;
 
-        public object? First => _first?.Value;
-        public object? Last => _last?.Value;
+        public T? First => _first!.Value;
+        public T? Last => _last!.Value;
 
         public int Count { get; protected set; }
 
@@ -31,7 +31,7 @@ namespace LibraryClasses
             Count = 0;
         }
 
-        protected virtual LinkedListNode CreateNode(object value, LinkedListNode? next = null, LinkedListNode? prev = null)
+        protected virtual LinkedListNode CreateNode(T value, LinkedListNode? next = null, LinkedListNode? prev = null)
         {
             return new LinkedListNode(value) { Next = next};
         }
@@ -41,7 +41,7 @@ namespace LibraryClasses
             prev!.Next = node;
         }
 
-        public void Add(object value)
+        public void Add(T value)
         {
             var newNode = CreateNode(value);
 
@@ -60,7 +60,7 @@ namespace LibraryClasses
             Count++;
         }
 
-        public void AddFirst(object value)
+        public void AddFirst(T value)
         {
             var newNode = CreateNode(value);
 
@@ -78,7 +78,7 @@ namespace LibraryClasses
             Count++;
         }
 
-        public virtual void Insert(int index, object value)
+        public virtual void Insert(int index, T value)
         {
             if (index < 0 || index > Count)
                 throw new ArgumentOutOfRangeException(nameof(index));
@@ -108,13 +108,13 @@ namespace LibraryClasses
             Count++;
         }
 
-        public bool Contains(object value)
+        public bool Contains(T value)
         {
             if (_first == null)
                 return false;
             else
             {
-                if(_first.Value.Equals(value) || _last!.Value.Equals(value))
+                if(_first.Value!.Equals(value) || _last!.Value!.Equals(value))
                     return true;
                 else
                 {
@@ -122,7 +122,7 @@ namespace LibraryClasses
 
                     while (currentNode != null)
                     {
-                        if(currentNode.Value.Equals(value))
+                        if(currentNode.Value!.Equals(value))
                             return true;
                         currentNode = currentNode.Next;
                     }
@@ -132,16 +132,16 @@ namespace LibraryClasses
             return false;
         }
 
-        protected virtual bool RemoveNode(object value)
+        protected virtual bool RemoveNode(T value)
         {
             LinkedListNode? prevNode = null;
             var current = _first;
 
             while (current != null)
             {
-                if (current.Value.Equals(value))
+                if (current.Value!.Equals(value))
                 {
-                    if (_first!.Value.Equals(value))
+                    if (_first!.Value!.Equals(value))
                     {
                         _first = current.Next;
 
@@ -167,7 +167,7 @@ namespace LibraryClasses
             return false;
         }
 
-        public bool Remove(object value)
+        public bool Remove(T value)
         {
             if (_first == null)
                 throw new InvalidOperationException("List is empty");
@@ -175,14 +175,14 @@ namespace LibraryClasses
             return RemoveNode(value);
         }
 
-        public object[] ToArray()
+        public T[] ToArray()
         {
-            var objects = new object[0];
+            var objects = new T[0];
 
             if(_first == null)
                 return objects;
 
-            objects = new object[Count];
+            objects = new T[Count];
             var currentNode = _first;
             var index = 0; 
             while (currentNode != null)

@@ -2,13 +2,13 @@
 
 namespace LibraryClasses
 {
-    class TreeNode
+    class TreeNode<T>
     {
-        public int Value { get; }
-        public TreeNode? Left { get; set; }
-        public TreeNode? Right { get; set; }
+        public T Value { get; }
+        public TreeNode<T>? Left { get; set; }
+        public TreeNode<T>? Right { get; set; }
 
-        public TreeNode(int value)
+        public TreeNode(T value)
         {
             Value = value;
             Left = null;
@@ -16,61 +16,56 @@ namespace LibraryClasses
         }
     }
 
-    public class BinaryTree : IBinaryTree
+    public class BinaryTree<T> : IBinaryTree<T> where T: IComparable<T>
     {
-        private TreeNode? Root { get; set; }
-        object? IBinaryTree.Root => Root;
+        private TreeNode<T>? _root;
+        public T? Root => _root!.Value;
         public int Count { get; private set; }
 
         public BinaryTree()
         {
-            Root = null;
+            _root = null;
             Count = 0;
         }
 
         
-        public void Add(int value)
+        public void Add(T value)
         {
-            if (Root == null)
-                Root = new TreeNode(value);
+            if (_root == null)
+                _root = new TreeNode<T>(value);
             else
-                RecursiveAdd(Root, value);
+                RecursiveAdd(_root, value);
 
             Count++;
         }
 
-        void ICollection.Add(object item)
+        void ICollections<T>.Add(T item)
         {
-            if (item is int value)
-            {
-                Add(value);
-            }
-            else
-                throw new ArgumentException("Item is not an integer.");
+            Add(item);
         }
 
-        private void RecursiveAdd(TreeNode node, int value)
+        private void RecursiveAdd(TreeNode<T> node, T value)
         {
-            if(value < node.Value)
+            if(value.CompareTo(node.Value) < 0)
                 if(node.Left == null)
-                    node.Left = new TreeNode(value);
+                    node.Left = new TreeNode<T>(value);
                 else
                     RecursiveAdd(node.Left, value);
             else
                 if(node.Right == null)
-                    node.Right = new TreeNode(value);
+                    node.Right = new TreeNode<T>(value);
                 else
                     RecursiveAdd(node.Right, value);
         }
 
-        public bool Contains(int value)
+        public bool Contains(T value)
         {
-            return Contains(Root!, value);
+            return Contains(_root!, value);
         }
 
-        bool ICollection.Contains(object item)
+        bool ICollections<T>.Contains(T item)
         {
-            if (item is int value)
+            if (item is T value)
             {
                 return Contains(value);
             }
@@ -78,49 +73,38 @@ namespace LibraryClasses
                 throw new ArgumentException("Item is not an integer.");
         }
 
-        private bool Contains(TreeNode node, int value)
+        private bool Contains(TreeNode<T> node, T value)
         {
             if(node == null)
                 return false;
             
             if(node.Value.Equals(value))
                 return true;
-            else if(value < node.Value)
+            else if(value.CompareTo(node.Value) < 0)
                 return Contains(node.Left!, value);
             else
                 return Contains(node.Right!, value);
         }
 
-        private int MinValue(TreeNode node)
-        {
-            int minValue = node.Value;
-            while (node.Left != null)
-            {
-                minValue = node.Left.Value;
-                node = node.Left;
-            }
-            return minValue;
-        }
-
         public void Clear()
         {
-            Root = null!;
+            _root = null!;
             Count = 0;
         }
 
-        public object[] DFS()
+        public T[] DFS()
         {
-            var result = new List();
+            var result = new List<T>();
 
-            if (Root == null)
+            if (_root == null)
                 return result.ToArray();
 
-            DFSRecursive(Root, result);
+            DFSRecursive(_root!, result);
 
             return result.ToArray();
         }
 
-        private void DFSRecursive(TreeNode node, List result)
+        private void DFSRecursive(TreeNode<T> node, List<T> result)
         {
             if (node == null)
                 return;
@@ -131,18 +115,18 @@ namespace LibraryClasses
             DFSRecursive(node.Right!, result);
         }
 
-        public object[] ToArray()
+        public T[] ToArray()
         {
-            var objects = new object[Count];
-            return BFS(Root!, objects);
+            var objects = new T[Count];
+            return BFS(_root!, objects);
         }
 
-        private object[] BFS(TreeNode root, object[] array)
+        private T[] BFS(TreeNode<T> root, T[] array)
         {
             if (root == null)
                 throw new ArgumentNullException(nameof(root), "The root node cannot be null.");
 
-            var queue = new Queue();
+            var queue = new Queue<TreeNode<T>>();
 
             queue.Enqueue(root);
 
@@ -150,7 +134,7 @@ namespace LibraryClasses
 
             while(queue.Count > 0)
             {
-                var node = (TreeNode)queue.Dequeue();
+                var node = queue.Dequeue();
                 array[index++] = node.Value;
 
                 if(node.Left != null)

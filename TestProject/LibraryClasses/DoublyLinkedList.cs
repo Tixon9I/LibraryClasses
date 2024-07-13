@@ -2,19 +2,19 @@
 
 namespace LibraryClasses
 {
-    public class DoublyLinkedList : LinkedList, ILinkedList
+    public class DoublyLinkedList<T> : LinkedList<T>, ILinkedList<T>
     {
         class DoublyLinkedListNode : LinkedListNode
         {
             public DoublyLinkedListNode? Prev { get; set; }
 
-            public DoublyLinkedListNode(object value) : base(value)
+            public DoublyLinkedListNode(T value) : base(value)
             {
                 Prev = null;
             }
         }
 
-        protected override LinkedListNode CreateNode(object value, LinkedListNode? next = null, LinkedListNode? prev = null)
+        protected override LinkedListNode CreateNode(T value, LinkedListNode? next = null, LinkedListNode? prev = null)
         {
             return new DoublyLinkedListNode(value) 
             { 
@@ -39,14 +39,14 @@ namespace LibraryClasses
                 _last = node;
         }
 
-        protected override bool RemoveNode(object value)
+        protected override bool RemoveNode(T value)
         {
             DoublyLinkedListNode? previous = null;
             var current = _first;
 
             while (current != null)
             {
-                if (current.Value.Equals(value))
+                if (current.Value!.Equals(value))
                 {
                     if (previous == null)
                     {

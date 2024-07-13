@@ -1,9 +1,9 @@
 ﻿namespace LibraryClasses.Interfaces
 {
-    internal interface IBinaryTree : ICollection
+    public interface IBinaryTree<T> : ICollections<T>
     {
-        object? Root { get; }
+        T? Root { get; }
 
-        object[] DFS();
+        T[] DFS();
     }
 }

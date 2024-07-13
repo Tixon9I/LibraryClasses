@@ -1,4 +1,9 @@
-﻿using LibraryClasses;
+﻿using CustomList = LibraryClasses.List<object>;
+using CustomBinaryTree = LibraryClasses.BinaryTree<int>;
+using CustomQueue = LibraryClasses.Queue<int>;
+using CustomStack = LibraryClasses.Stack<int>;
+using CustomLinkedList = LibraryClasses.LinkedList<int>;
+using CustomDoublyLinkedList = LibraryClasses.DoublyLinkedList<int>;
 
 namespace TestProject
 {
@@ -21,7 +26,7 @@ namespace TestProject
 
         static void TestList()
         {
-            List list = new List(9);
+            CustomList list = new CustomList(9);
             
             AddElementsToList(list);
 
@@ -42,7 +47,7 @@ namespace TestProject
             TestListClear(list);
         }
 
-        static void AddElementsToList(List list)
+        static void AddElementsToList(CustomList list)
         {
             list.Add(10);
             list.Add("10");
@@ -55,14 +60,14 @@ namespace TestProject
             Console.WriteLine();
         }
 
-        static void TestListContains(List list)
+        static void TestListContains(CustomList list)
         {
             var num = list.Contains(10);
             Console.WriteLine($"List contains 10: {num}");
             Console.WriteLine();
         }
 
-        static void TestListInsert(List list)
+        static void TestListInsert(CustomList list)
         {
             list.Insert(0, "111");
             Console.WriteLine("List after inserting '111' at index 0:");
@@ -70,7 +75,7 @@ namespace TestProject
             Console.WriteLine();
         }
 
-        static void TestListReverse(List list)
+        static void TestListReverse(CustomList list)
         {
             list.Reverse();
             Console.WriteLine("List after reversing:");
@@ -78,7 +83,7 @@ namespace TestProject
             Console.WriteLine();
         }
 
-        static void TestListRemove(List list)
+        static void TestListRemove(CustomList list)
         {
             list.Remove(10);
             Console.WriteLine("List after removing '10':");
@@ -86,7 +91,7 @@ namespace TestProject
             Console.WriteLine();
         }
 
-        static void TestListRemoveAt(List list)
+        static void TestListRemoveAt(CustomList list)
         {
             list.RemoveAt(3);
             Console.WriteLine("List after removing element at index 3:");
@@ -94,14 +99,14 @@ namespace TestProject
             Console.WriteLine();
         }
 
-        static void TestListIndexOf(List list)
+        static void TestListIndexOf(CustomList list)
         {
             var index = list.IndexOf("end");
             Console.WriteLine($"Index of 'end' in the list: {index}");
             Console.WriteLine();
         }
 
-        static void TestListToArray(List list)
+        static void TestListToArray(CustomList list)
         {
             var array = list.ToArray();
             Console.WriteLine("List converted to array:");
@@ -109,7 +114,7 @@ namespace TestProject
             Console.WriteLine();
         }
 
-        static void TestListClear(List list)
+        static void TestListClear(CustomList list)
         {
             list.Clear();
             Console.WriteLine("List cleared.");
@@ -125,7 +130,7 @@ namespace TestProject
             Console.WriteLine();
         }
 
-        static void PrintList(List list)
+        static void PrintList(CustomList list)
         {
             for (int i = 0; i < list.Count; i++)
             {
@@ -147,7 +152,7 @@ namespace TestProject
 
         static void TestBinaryTree()
         {
-            BinaryTree tree = new BinaryTree();
+            CustomBinaryTree tree = new CustomBinaryTree();
 
             tree.Add(10);
             tree.Add(5);
@@ -175,7 +180,7 @@ namespace TestProject
             TestBinaryTreeClear(tree);
         }
 
-        static void TestBinaryTreeContains(BinaryTree tree)
+        static void TestBinaryTreeContains(CustomBinaryTree tree)
         {
             Console.WriteLine($"Contains 10: {tree.Contains(10)}"); // True
             Console.WriteLine($"Contains 7: {tree.Contains(7)}");   // True
@@ -183,7 +188,7 @@ namespace TestProject
             Console.WriteLine();
         }
 
-        static void TestBinaryTreeDFS(BinaryTree tree)
+        static void TestBinaryTreeDFS(CustomBinaryTree tree)
         {
             Console.WriteLine("DFS Traversal:");
             foreach (var value in tree.DFS())
@@ -194,7 +199,7 @@ namespace TestProject
             Console.WriteLine();
         }
 
-        static void TestBinaryTreeBFS(BinaryTree tree)
+        static void TestBinaryTreeBFS(CustomBinaryTree tree)
         {
             Console.WriteLine("BFS Traversal:");
             foreach (var value in tree.ToArray())
@@ -205,7 +210,7 @@ namespace TestProject
             Console.WriteLine();
         }
 
-        static void TestBinaryTreeClear(BinaryTree tree)
+        static void TestBinaryTreeClear(CustomBinaryTree tree)
         {
             tree.Clear();
             Console.WriteLine("Tree cleared");
@@ -216,7 +221,7 @@ namespace TestProject
 
         static void TestQueue()
         {
-            Queue queue = new Queue();
+            CustomQueue queue = new CustomQueue();
             
             queue.Enqueue(1);
             queue.Enqueue(2);
@@ -237,39 +242,39 @@ namespace TestProject
             TestQueueClear(queue);
         }
 
-        static void TestQueueCount(Queue queue)
+        static void TestQueueCount(CustomQueue queue)
         {
             Console.WriteLine("Count: " + queue.Count); // Output: Count: 3
             Console.WriteLine();
         }
 
-        static void TestQueueContains(Queue queue)
+        static void TestQueueContains(CustomQueue queue)
         {
             Console.WriteLine("Contains 2: " + queue.Contains(2)); // Output: Contains 2: True
             Console.WriteLine("Contains 4: " + queue.Contains(4)); // Output: Contains 4: False
             Console.WriteLine();
         }
 
-        static void TestQueuePeek(Queue queue)
+        static void TestQueuePeek(CustomQueue queue)
         {
             Console.WriteLine("Peek: " + queue.Peek()); // Output: Peek: 1
             Console.WriteLine();
         }
 
-        static void TestQueueDequeue(Queue queue)
+        static void TestQueueDequeue(CustomQueue queue)
         {
             Console.WriteLine("Dequeue: " + queue.Dequeue()); // Output: Dequeue: 1
             Console.WriteLine();
         }
 
-        static void TestQueueToArray(Queue queue)
+        static void TestQueueToArray(CustomQueue queue)
         {
             var array = queue.ToArray();
             Console.WriteLine("Queue to Array: " + string.Join(", ", array)); // Output: Queue to Array: 2, 3
             Console.WriteLine();
         }
 
-        static void TestQueueClear(Queue queue)
+        static void TestQueueClear(CustomQueue queue)
         {
             queue.Clear();
             Console.WriteLine("Count after Clear: " + queue.Count); // Output: Count after Clear: 0
@@ -279,7 +284,7 @@ namespace TestProject
 
         static void TestStack()
         {
-            Stack stack = new Stack();
+            CustomStack stack = new CustomStack();
 
             stack.Push(1);
             stack.Push(2);
@@ -300,39 +305,39 @@ namespace TestProject
             TestStackClear(stack);
         }
 
-        static void TestStackCount(Stack stack)
+        static void TestStackCount(CustomStack stack)
         {
             Console.WriteLine("Count: " + stack.Count); // Output: Count: 3
             Console.WriteLine();
         }
 
-        static void TestStackContains(Stack stack)
+        static void TestStackContains(CustomStack stack)
         {
             Console.WriteLine("Contains 2: " + stack.Contains(2)); // Output: Contains 2: True
             Console.WriteLine("Contains 4: " + stack.Contains(4)); // Output: Contains 4: False
             Console.WriteLine();
         }
 
-        static void TestStackPeek(Stack stack)
+        static void TestStackPeek(CustomStack stack)
         {
             Console.WriteLine("Peek: " + stack.Peek()); // Output: Peek: 3
             Console.WriteLine();
         }
 
-        static void TestStackPop(Stack stack)
+        static void TestStackPop(CustomStack stack)
         {
             Console.WriteLine("Pop: " + stack.Pop()); // Output: Pop: 3
             Console.WriteLine();
         }
 
-        static void TestStackToArray(Stack stack)
+        static void TestStackToArray(CustomStack stack)
         {
             var array = stack.ToArray();
             Console.WriteLine("Stack to Array: " + string.Join(", ", array)); // Output: Stack to Array: 2, 1
             Console.WriteLine();
         }
 
-        static void TestStackClear(Stack stack)
+        static void TestStackClear(CustomStack stack)
         {
             stack.Clear();
             Console.WriteLine("Count after Clear: " + stack.Count); // Output: Count after Clear: 0
@@ -342,7 +347,7 @@ namespace TestProject
 
         static void TestLinkedList()
         {
-            var linkedList = new LinkedList();
+            var linkedList = new CustomLinkedList();
 
             linkedList.Add(10);
             linkedList.Add(20);
@@ -370,14 +375,14 @@ namespace TestProject
             TestPrintLinkedList(linkedList);
         }
 
-        static void TestPrintLinkedList(LinkedList linkedList)
+        static void TestPrintLinkedList(CustomLinkedList linkedList)
         {
             Console.WriteLine("Elements in the list:");
             PrintArrayMethodLinkedList(linkedList.ToArray());
             Console.WriteLine();
         }
 
-        static void PrintArrayMethodLinkedList(object[] array)
+        static void PrintArrayMethodLinkedList(int[] array)
         {
             foreach (var item in array)
             {
@@ -389,7 +394,7 @@ namespace TestProject
 
         static void TestDoublyLinkedList()
         {
-            var doublyLinkedList = new DoublyLinkedList();
+            var doublyLinkedList = new CustomDoublyLinkedList();
 
             TestDoublyLinkedListAdd(doublyLinkedList);
             TestDoublyLinkedListRemove(doublyLinkedList);
@@ -398,7 +403,7 @@ namespace TestProject
             TestDoublyLinkedListClear(doublyLinkedList);
         }
 
-        static void TestDoublyLinkedListAdd(DoublyLinkedList list)
+        static void TestDoublyLinkedListAdd(CustomDoublyLinkedList list)
         {
             list.Add(1);
             list.Add(2);
@@ -409,7 +414,7 @@ namespace TestProject
             PrintListMethodDoublyLinkedList(list);
         }
 
-        static void TestDoublyLinkedListRemove(DoublyLinkedList list)
+        static void TestDoublyLinkedListRemove(CustomDoublyLinkedList list)
         {
             Console.WriteLine("Removing element 3 from the list...");
             list.Remove(3);
@@ -424,21 +429,21 @@ namespace TestProject
             PrintListMethodDoublyLinkedList(list);
         }
 
-        static void TestDoublyLinkedListInsert(DoublyLinkedList list)
+        static void TestDoublyLinkedListInsert(CustomDoublyLinkedList list)
         {
             Console.WriteLine("Inserting element 10 at index 1...");
             list.Insert(1, 10);
             PrintListMethodDoublyLinkedList(list);
         }
 
-        static void TestDoublyLinkedListContains(DoublyLinkedList list)
+        static void TestDoublyLinkedListContains(CustomDoublyLinkedList list)
         {
             Console.WriteLine("Checking if 3 is in the list: " + list.Contains(3));
             Console.WriteLine("Checking if 10 is in the list: " + list.Contains(10));
             Console.WriteLine();
         }
 
-        static void TestDoublyLinkedListClear(DoublyLinkedList list)
+        static void TestDoublyLinkedListClear(CustomDoublyLinkedList list)
         {
             Console.WriteLine("Clearing the list...");
             list.Clear();
@@ -446,7 +451,7 @@ namespace TestProject
             Console.WriteLine();
         }
 
-        static void PrintListMethodDoublyLinkedList(DoublyLinkedList list)
+        static void PrintListMethodDoublyLinkedList(CustomDoublyLinkedList list)
         {
             Console.Write("List elements: ");
             var array = list.ToArray();
