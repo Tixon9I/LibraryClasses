@@ -51,13 +51,13 @@ namespace LibraryClasses
             }
         }
 
-        public void Add(T obj)
+        public virtual void Add(T obj)
         {
             Resize(Count + 1);
             _objects[Count++] = obj;
         }
 
-        public void Insert(int index, T obj)
+        public virtual void Insert(int index, T obj)
         {
             if (index < 0 || index > Count)
                 throw new IndexOutOfRangeException();
@@ -71,7 +71,7 @@ namespace LibraryClasses
             Count++;
         }
 
-        public bool Remove(T obj)
+        public virtual bool Remove(T obj)
         {
             var index = IndexOf(obj);
 
@@ -84,7 +84,7 @@ namespace LibraryClasses
             return false;
         }
 
-        public void RemoveAt(int index)
+        public virtual void RemoveAt(int index)
         {
             if (index < 0 || index >= Count)
                 throw new IndexOutOfRangeException();
