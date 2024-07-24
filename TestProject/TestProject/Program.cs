@@ -1,4 +1,5 @@
-﻿using ObserverList = LibraryClasses.ObserverList<object>;
+﻿using LibraryClasses;
+using ObserverList = LibraryClasses.ObserverList<object>;
 
 namespace TestProject
 {
@@ -16,10 +17,18 @@ namespace TestProject
             TestRemoveAt(list);
         }
 
-        static void PrintResultList(object? sender, string name)
+        static void PrintResultList(object? sender, TypeOperationList<object> args)
+    {
+        Console.WriteLine($"Method: {args.TypeOperation} was called.");
+        if (args.Index.HasValue)
         {
-            Console.WriteLine($"Method: {name} was called.");
+            Console.WriteLine($"At index: {args.Index.Value}");
         }
+        if (args.Item != null)
+        {
+            Console.WriteLine($"Item: {args.Item}");
+        }
+    }
 
         static void TestAdd(ObserverList list)
         {
