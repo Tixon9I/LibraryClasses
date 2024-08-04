@@ -1,4 +1,5 @@
 ﻿using LibraryClasses.Interfaces;
+using System.Collections;
 
 namespace LibraryClasses
 {
@@ -137,6 +138,19 @@ namespace LibraryClasses
                 _objects[i] = _objects[Count - i - 1];
                 _objects[Count - i - 1] = temp;
             }
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            for(var i = 0; i < Count; i++)
+            {
+                yield return _objects![i];
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

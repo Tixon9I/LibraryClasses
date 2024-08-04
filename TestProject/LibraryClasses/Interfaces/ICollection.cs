@@ -1,6 +1,6 @@
 ﻿namespace LibraryClasses.Interfaces
 {
-    public interface ICollections<T>
+    public interface ICollections<T> : IEnumerable<T>
     {
         int Count { get; }
 

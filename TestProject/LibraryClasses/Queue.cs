@@ -1,4 +1,5 @@
 ﻿using LibraryClasses.Interfaces;
+using System.Collections;
 
 namespace LibraryClasses
 {
@@ -115,6 +116,21 @@ namespace LibraryClasses
             _head = null;
             _tail = null;
             Count = 0;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            var current = _head;
+            while (current != null)
+            {
+                yield return current.Value;
+                current = current.Next;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
