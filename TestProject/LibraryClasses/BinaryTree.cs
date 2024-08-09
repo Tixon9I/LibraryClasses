@@ -1,4 +1,5 @@
 ﻿using LibraryClasses.Interfaces;
+using System.Collections;
 
 namespace LibraryClasses
 {
@@ -144,6 +145,30 @@ namespace LibraryClasses
             }
 
             return array;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            var queue = new Queue<TreeNode<T>>();
+
+            queue.Enqueue(_root!);
+
+            while (queue.Count > 0)
+            {
+                var node = queue.Dequeue();
+                yield return node.Value;
+                
+                if (node.Left != null)
+                    queue.Enqueue(node.Left);
+                if (node.Right != null)
+                    queue.Enqueue(node.Right);
+            }
+
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
