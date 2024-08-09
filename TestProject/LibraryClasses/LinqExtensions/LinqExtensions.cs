@@ -1,4 +1,6 @@
-﻿namespace LibraryClasses.LinqExtensions;
+﻿using LibraryClasses.Interfaces;
+
+namespace LibraryClasses.LinqExtensions;
 
 public static class LinqExtensions
 {
@@ -52,25 +54,20 @@ public static class LinqExtensions
         }
     }
 
-    public static IEnumerable<T> Fiirst<T>(this IEnumerable<T> collection, Predicate<T> predicate)
+    public static T Fiirst<T>(this IEnumerable<T> collection, Predicate<T> predicate)
     {
         if(collection == null)
             throw new NullReferenceException();
 
-        var flagIn = false;
-
         foreach (var item in collection)
         {
-            if(predicate(item))
+            if (predicate(item))
             {
-                flagIn = true;
-                yield return item;
-                yield break;
+                return item;
             }
         }
 
-        if(!flagIn)
-            throw new InvalidOperationException();
+        throw new InvalidOperationException();
     }
 
     public static IEnumerable<T> FiirstOrDefault<T>(this IEnumerable<T> collection, Predicate<T> predicate)
@@ -91,7 +88,7 @@ public static class LinqExtensions
             yield return default!;
     }
 
-    public static IEnumerable<T> Laast<T>(this IEnumerable<T> collection, Predicate<T> predicate)
+    public static T Laast<T>(this IEnumerable<T> collection, Predicate<T> predicate)
     {
         if (collection == null)
             throw new NullReferenceException();
@@ -111,7 +108,7 @@ public static class LinqExtensions
         if (!flagIn)
             throw new InvalidOperationException();
         else
-            yield return lastItem;
+            return lastItem;
     }
 
     public static IEnumerable<T> LaastOrDefault<T>(this IEnumerable<T> collection, Predicate<T> predicate)
@@ -134,7 +131,7 @@ public static class LinqExtensions
             yield return lastItem;
     }
 
-    public static IEnumerable<bool> Aall<T>(this IEnumerable<T> collection, Predicate<T> predicate)
+    public static bool Aall<T>(this IEnumerable<T> collection, Predicate<T> predicate)
     {
         var flagResult = true;
 
@@ -143,17 +140,14 @@ public static class LinqExtensions
             if (!predicate(item))
             {
                 flagResult = false;
-                yield return flagResult;
-                yield break;
+                return flagResult;
             }
         }
 
-        if(flagResult)
-            yield return true;
-
+        return flagResult;
     }
 
-    public static IEnumerable<bool> Aany<T>(this IEnumerable<T> collection, Predicate<T> predicate)
+    public static bool Aany<T>(this IEnumerable<T> collection, Predicate<T> predicate)
     {
         var flagResult = false;
 
@@ -162,17 +156,20 @@ public static class LinqExtensions
             if (predicate(item))
             {
                 flagResult = true;
-                yield return flagResult;
-                yield break;
+                return flagResult;
             }
         }
 
-        if(!flagResult)
-            yield return false;
+        return false;
     }
 
     public static IEnumerable<TResult> Seelect<TSource, TResult>(this IEnumerable<TSource> collection, Func<TSource, TResult> selector)
     {
+        if (collection == null)
+            throw new ArgumentNullException(nameof(collection));
+        if (selector == null)
+            throw new ArgumentNullException(nameof(selector));
+
         foreach (var item in collection)
         {
             yield return selector(item);
@@ -181,6 +178,11 @@ public static class LinqExtensions
 
     public static IEnumerable<TResult> SeelectMany<TSource, TResult>(this IEnumerable<TSource> collection, Func<TSource, IEnumerable<TResult>> selector)
     {
+        if (collection == null)
+            throw new ArgumentNullException(nameof(collection));
+        if (selector == null)
+            throw new ArgumentNullException(nameof(selector));
+
         foreach (var element in collection)
         {
             foreach (var subElement in selector(element))
@@ -207,37 +209,77 @@ public static class LinqExtensions
     //    }
     //}
 
-    public static TResult[] ToArray<TSource,TResult>(this IEnumerable<TSource> collection, Func<TSource, TResult> selector)
+    public static TResult[] ToArray<TSource, TResult>(this IEnumerable<TSource> collection, Func<TSource, TResult>? selector = null)
     {
         if (collection == null)
             throw new ArgumentNullException(nameof(collection));
-        if (selector == null)
-            throw new ArgumentNullException(nameof(selector));
+
+        if (collection is ICollections<TSource> customCollection)
+        {
+            // If there is a selector, use it to get a filtered collection
+            if (selector != null)
+            {
+                var filteredCollection = customCollection.Seelect(selector);
+                return filteredCollection.ToArray();
+            }
+            else
+            {
+                // If there is no selector, use the ToArray method from the interface directly
+                if (typeof(TSource) == typeof(TResult))
+                {
+                    return (TResult[])(object)customCollection.ToArray();
+                }
+
+                var resultArray = new TResult[customCollection.Count];
+                int index = 0;
+                foreach (var item in customCollection)
+                {
+                    resultArray[index++] = (TResult)(object)item!;
+                }
+                return resultArray;
+            }
+        }
+
+        // Standard approach for collections that do not implement ICollections<T>
+        IEnumerable<TResult> resultCollection = selector != null
+            ? collection.Seelect(selector)
+            : collection.Cast<TResult>();
 
         var resultList = new List<TResult>();
 
-        foreach (var item in collection)
+        foreach (var item in resultCollection)
         {
-            resultList.Add(selector(item));
+            resultList.Add(item);
         }
 
         return resultList.ToArray();
     }
 
-    public static List<TResult> ToList<TSource, TResult>(this IEnumerable<TSource> collection, Func<TSource, TResult> selector)
+
+    public static List<TResult> ToList<TSource, TResult>(this IEnumerable<TSource> collection, Func<TSource, TResult> selector = null!)
     {
         if (collection == null)
             throw new ArgumentNullException(nameof(collection));
-        if (selector == null)
-            throw new ArgumentNullException(nameof(selector));
+
+        IEnumerable<TResult> resultCollection;
+
+        if (selector != null)
+        {
+            resultCollection = collection.Seelect(selector);
+        }
+        else
+        {
+            resultCollection = collection.Cast<TResult>();
+        }
 
         var list = new List<TResult>();
 
-        foreach (var item in collection)
+        foreach (var item in resultCollection)
         {
-            list.Add(selector(item));
+            list.Add(item);
         }
 
         return list;
     }
+
 }

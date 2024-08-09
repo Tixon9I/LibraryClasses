@@ -99,10 +99,8 @@ namespace TestProject
             Console.WriteLine();
 
             Console.Write("First: ");
-            foreach (var item in collection.Fiirst(x => (int?)(object?)x == 2)) // The first element with value 2
-            {
-                Console.Write(item + " ");
-            }
+            var resultFiirst = collection.Fiirst(x => (int?)(object?)x == 2); // The first element with value 2
+            Console.Write(resultFiirst);
             Console.WriteLine();
 
             Console.Write("FirstOrDefault: ");
@@ -113,10 +111,9 @@ namespace TestProject
             Console.WriteLine();
 
             Console.Write("Last: ");
-            foreach (var item in collection.Laast(x => (int?)(object?)x == 3)) // The last element with value 3
-            {
-                Console.Write(item + " ");
-            }
+            var resultLaast = collection.Laast(x => (int?)(object?)x == 3); // The last element with value 3
+            Console.Write(resultLaast);
+
             Console.WriteLine();
 
             Console.Write("LastOrDefault: ");
@@ -127,17 +124,15 @@ namespace TestProject
             Console.WriteLine();
 
             Console.Write("All: ");
-            foreach (var result in collection.Aall(x => (int?)(object?)x > 0)) // Check that all elements are greater than 0
-            {
-                Console.Write(result);
-            }
+            var allGreaterThanZero = collection.Aall(x => (int?)(object?)x > 0);
+            Console.Write(allGreaterThanZero);
+
             Console.WriteLine();
 
             Console.Write("Any: ");
-            foreach (var result in collection.Aany(x => (int?)(object?)x == 2)) // Check if there is at least one element with value 2
-            {
-                Console.Write(result);
-            }
+            var anyNumberIsEqualTwo = collection.Aany(x => (int?)(object?)x == 2); // Check if there is at least one element with value 2
+            Console.Write(anyNumberIsEqualTwo);
+            
             Console.WriteLine();
 
             Console.Write("Select: ");
