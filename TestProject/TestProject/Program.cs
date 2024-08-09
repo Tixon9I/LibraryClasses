@@ -1,172 +1,80 @@
-﻿using LibraryClasses.LinqExtensions;
-using CustomList = LibraryClasses.List<int>;
-using CustomBinaryTree = LibraryClasses.BinaryTree<int>;
-using CustomQueue = LibraryClasses.Queue<int>;
-using CustomStack = LibraryClasses.Stack<int>;
-using CustomLinkedList = LibraryClasses.LinkedList<int>;
-using CustomDoublyLinkedList = LibraryClasses.DoublyLinkedList<int>;
-using LibraryClasses.Interfaces;
-
-namespace TestProject
+﻿namespace TestProject
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            // CustomList testing
-            Console.WriteLine("Testing on CustomList:");
-            var customList = new CustomList{ 1, 2, 3, 4, 5 };
-            TestLinqMethods(customList);
-
-            // CustomBinaryTree testing
-            Console.WriteLine("Testing on CustomBinaryTree:");
-            var customBinaryTree = new CustomBinaryTree();
-            customBinaryTree.Add(1);
-            customBinaryTree.Add(2);
-            customBinaryTree.Add(3);
-            TestLinqMethods(customBinaryTree);
-
-            // CustomQueue testing
-            Console.WriteLine("Testing on CustomQueue:");
-            var customQueue = new CustomQueue();
-            customQueue.Enqueue(1);
-            customQueue.Enqueue(2);
-            customQueue.Enqueue(3);
-            TestLinqMethods(customQueue);
-
-            // CustomStack testing
-            Console.WriteLine("Testing on CustomStack:");
-            var customStack = new CustomStack();
-            customStack.Push(1);
-            customStack.Push(2);
-            customStack.Push(3);
-            TestLinqMethods(customStack);
-
-            // CustomLinkedList testing
-            Console.WriteLine("Testing on CustomLinkedList:");
-            var customLinkedList = new CustomLinkedList();
-            customLinkedList.Add(1);
-            customLinkedList.Add(2);
-            customLinkedList.Add(3);
-            TestLinqMethods(customLinkedList);
-
-            // CustomDoublyLinkedList testing
-            Console.WriteLine("Testing on CustomDoublyLinkedList:");
-            var customDoublyLinkedList = new CustomDoublyLinkedList();
-            customDoublyLinkedList.Add(1);
-            customDoublyLinkedList.Add(2);
-            customDoublyLinkedList.Add(3);
-            TestLinqMethods(customDoublyLinkedList);
-
-            Console.ReadLine();
-        }
-
-        static void TestLinqMethods<T>(ICollections<T> collection)
-        {
-            Console.Write("Filter: ");
-            foreach (var item in collection.Filter(x => (int?)(object?)x % 2 == 1)) // Filter odd numbers
-            {
-                Console.Write(item + " ");
-            }
-            Console.WriteLine();
-
-            Console.Write("Skip: ");
-            foreach (var item in collection.Skiip(2)) // Skip the first 2 elements
-            {
-                Console.Write(item + " ");
-            }
-            Console.WriteLine();
-
-            Console.Write("SkipWhile: ");
-            foreach (var item in collection.SkiipWhile(x => (int?)(object?)x < 3)) // Skip as long as the value is less than 3
-            {
-                Console.Write(item + " ");
-            }
-            Console.WriteLine();
-
-            Console.Write("Take: ");
-            foreach (var item in collection.Taake(3)) // Take the first 3 elements
-            {
-                Console.Write(item + " ");
-            }
-            Console.WriteLine();
-
-            Console.Write("TakeWhile: ");
-            foreach (var item in collection.TaakeWhile(x => (int?)(object?)x < 4)) // Take while the value is less than 4
-            {
-                Console.Write(item + " ");
-            }
-            Console.WriteLine();
-
-            Console.Write("First: ");
-            var resultFiirst = collection.Fiirst(x => (int?)(object?)x == 2); // The first element with value 2
-            Console.Write(resultFiirst);
-            Console.WriteLine();
-
-            Console.Write("FirstOrDefault: ");
-            foreach (var item in collection.FiirstOrDefault(x => (int?)(object?)x == 10)) // First element with value 10 or default value
-            {
-                Console.Write(item + " ");
-            }
-            Console.WriteLine();
-
-            Console.Write("Last: ");
-            var resultLaast = collection.Laast(x => (int?)(object?)x == 3); // The last element with value 3
-            Console.Write(resultLaast);
+            // Виведіть усі числа від 10 до 50 через кому
+            Console.WriteLine(string.Join(", ", Enumerable.Range(10, 41)));
 
             Console.WriteLine();
 
-            Console.Write("LastOrDefault: ");
-            foreach (var item in collection.LaastOrDefault(x => (int?)(object?)x == 10)) // Last element with value 10 or default value
-            {
-                Console.Write(item + " ");
-            }
-            Console.WriteLine();
-
-            Console.Write("All: ");
-            var allGreaterThanZero = collection.Aall(x => (int?)(object?)x > 0);
-            Console.Write(allGreaterThanZero);
+            // Виведіть лише ті числа від 10 до 50, які можна поділити на 3
+            Console.WriteLine(string.Join(' ', Enumerable.Range(10, 41).Where(s => s % 3 == 0)));
 
             Console.WriteLine();
 
-            Console.Write("Any: ");
-            var anyNumberIsEqualTwo = collection.Aany(x => (int?)(object?)x == 2); // Check if there is at least one element with value 2
-            Console.Write(anyNumberIsEqualTwo);
-            
-            Console.WriteLine();
-
-            Console.Write("Select: ");
-            foreach (var item in collection.Seelect(x => (int?)(object?)x * 2)) // Double the value
-            {
-                Console.Write(item + " ");
-            }
-            Console.WriteLine();
-
-            Console.Write("SelectMany: ");
-            foreach (var item in collection.SeelectMany(
-            x => new CustomList { (dynamic?)x, (dynamic?)x * 10 }))
-            {
-                Console.Write(item + " ");
-            }
-            Console.WriteLine();
-
-            Console.Write("ToArray: ");
-            var array = collection.ToArray(x => (int?)(object?)x * 1); // Convert to array
-            foreach (var item in array)
-            {
-                Console.Write(item + " ");
-            }
-            Console.WriteLine();
-
-            Console.Write("ToList: ");
-            var list = collection.ToList(x => (int?)(object?)x * 1); // Convert to list
-            foreach (var item in list)
-            {
-                Console.Write(item + " ");
-            }
+            // Виведіть слово "Linq" 10 разів
+            Console.WriteLine(string.Join(' ', Enumerable.Repeat("Linq", 10)));
 
             Console.WriteLine();
+
+            // Вивести всі слова з буквою «а» в рядку «aaa;abb;ccc;dap»
+
+            var striing = "aaa; abb; ccc; dap".Split(';');
+
+            Console.WriteLine(string.Join(' ', striing.Where(s => s.Contains('a'))));
+
+            Console.WriteLine();
+
+            // Виведіть кількість літер «а» у словах з цією літерою в рядку «aaa;abb;ccc;dap» через кому
+
+            Console.WriteLine(string.Join(',', striing.Select(s => s + s.Count(c => c == 'a'))));
+
+            Console.WriteLine();
+
+            // Вивести true, якщо слово "abb" існує в рядку "aaa;xabbx;abb;ccc;dap", інакше false
+
+            var str = "aaa;xabbx;abb;ccc;dap".Split(';');
+
+            Console.WriteLine(str.Any(a => a.Contains("abb")));
+
+            Console.WriteLine();
+
+            // Отримати найдовше слово в рядку "aaa;xabbx;abb;ccc;dap"
+
+            Console.WriteLine(str.MaxBy(m => m.Length));
+
+            Console.WriteLine();
+
+            // Обчислити середню довжину слова в рядку "aaa;xabbx;abb;ccc;dap"
+
+            Console.WriteLine(str.Average(a => a.Length));
+
+            Console.WriteLine();
+
+            // Вивести найкоротше слово в рядку "aaa;xabbx;abb;ccc;dap;zh" у зворотному порядку.
+
+            var st = "aaa;xabbx;abb;ccc;dap;zh".Split(';');
+
+            Console.WriteLine(st.MinBy(m => m.Length)?.Reverse().ToArray());
+
+            Console.WriteLine();
+
+            // Вивести true, якщо в першому слові, яке починається з "aa", усі літери "b" (За винятком "аа"), інакше false "baaa;aabb;aaa;xabbx;abb;ccc;dap;zh"
+
+            var s = "baaa;aabb;aaa;xabbx;abb;ccc;dap;zh".Split(';');
+
+            Console.WriteLine(s.FirstOrDefault(f => f.StartsWith("aa"))?.Skip(2).All(a => a == 'b') ?? false);
+
+            Console.WriteLine();
+
+            // Вивести останнє слово в послідовності, за винятком перших двох елементів, які закінчуються на "bb" (використовуйте послідовність із 10 завдання)
+
+            Console.Write(string.Join(' ', s.Where(w => !w.EndsWith("bb")).Select(s => s)) + " -> ");
+            Console.Write(s.Last());
+
             Console.WriteLine();
         }
-     }
+    }
  }
