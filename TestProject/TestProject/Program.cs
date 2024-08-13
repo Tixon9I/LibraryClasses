@@ -4,6 +4,60 @@
     {
         static void Main(string[] args)
         {
+
+            var linq2 = new Linq2HW();
+
+            var result = linq2.DisplayElementsWithoutArtObjects();
+
+            var result1 = linq2.DisplayNamesOfAllActors();
+
+            var result2 = linq2.DisplayActorsWhoHaveBirthdayInAugust();
+
+            //Console.WriteLine(result2); // Uncomment this code when you start to run this method (DisplayActorsWhoHaveBirthdayInAugust())
+
+            var result3 = linq2.DisplayTheOldestActors();
+
+            var result4 = linq2.DisplayCountBooksForEachAuthor();
+
+            var result5 = linq2.DisplayCountBooksForEachAuthorAndFilmsForEachDirector();
+
+            var result6 = linq2.DisplayCountUniqueLetter();
+
+            //Console.WriteLine(result6); // Uncomment this code when you start to run this method (DisplayCountUniqueLetter())
+
+            var result7 = linq2.DisplayNamesAllBooksOrderedForNamesAuthorAndCountPages();
+
+            var result8 = linq2.DisplayNameActorAndFilmsWithInvolves();
+
+            //foreach (var entry in result8) // Uncomment this code when you start to run this method (DisplayNameActorAndFilmsWithInvolves())
+            //{
+            //    Console.WriteLine($"{entry.Key}: {string.Join(", ", entry.Value)}");
+            //}
+
+            var result9 = linq2.DisplaySumPagesAllBooksAndSumIntValueInSequences();
+
+            var result10 = linq2.DisplayDictionaryBooks();
+
+            //foreach (var entry in result10)  // Uncomment this code when you start to run this method (DisplayDictionaryBooks())
+            //{
+            //    Console.WriteLine($"{entry.Key}: {string.Join(", ", entry.Value)}");
+            //}
+
+            var result11 = linq2.GetMattDamonFilmsExcludingStringActors();
+
+            foreach (var element in result11)
+            {
+                Console.WriteLine(element);
+            }
+
+
+
+
+            Console.WriteLine();
+            Console.WriteLine();
+
+            //------------------------------------------------------------------
+
             // Виведіть усі числа від 10 до 50 через кому
             Console.WriteLine(string.Join(", ", Enumerable.Range(10, 41)));
 
